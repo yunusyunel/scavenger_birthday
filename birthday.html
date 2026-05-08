@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Happy Birthday Katusha 🌹</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #6b3a3a;
+            --surface: #5a2e2e;
+            --card: #7a4040;
+            --border: #9a5a5a;
+            --rose: #e8758a;
+            --rose-light: #f0a0b0;
+            --rose-dim: #c45570;
+            --rose-pale: #fcd8e0;
+            --gold: #e8c090;
+            --gold-light: #f5d8b0;
+            --text: #fff0f2;
+            --text-dim: #c49090;
+            --correct: #7acca0;
+            --wrong: #f08080;
+            --petal1: #f4aabb;
+            --petal2: #f9c0cc;
+            --petal3: #fbd0da;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 24px 20px 60px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(255, 160, 180, 0.10) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 85%, rgba(200, 80, 100, 0.08) 0%, transparent 55%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .petal {
+            position: fixed;
+            border-radius: 50% 20% 50% 20%;
+            opacity: 0;
+            animation: petalFall linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes petalFall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.35;
+            }
+
+            90% {
+                opacity: 0.15;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .main {
+            width: 100%;
+            max-width: 460px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeUp 0.5s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── LOADING ── */
+        #screen-loading {
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .loading-rose {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 20px;
+            animation: breatheSlow 3s ease-in-out infinite;
+        }
+
+        @keyframes breatheSlow {
+
+            0%,
+            100% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.12)
+            }
+        }
+
+        .loading-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--text-dim);
+        }
+
+        .loading-error {
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--wrong);
+            line-height: 1.6;
+            display: none;
+        }
+
+        .retry-btn {
+            margin-top: 14px;
+            display: none;
+            background: transparent;
+            border: 1px solid var(--rose-dim);
+            border-radius: 2px;
+            color: var(--rose-light);
+            font-family: 'Jost', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        /* ── WELCOME ── */
+        .welcome-wrap {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .welcome-rose {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 24px;
+            animation: breatheSlow 4s ease-in-out infinite;
+        }
+
+        .welcome-wrap h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 44px;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--rose-pale);
+            line-height: 1.15;
+            margin-bottom: 6px;
+        }
+
+        .welcome-wrap .tagline {
+            font-size: 11px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 32px;
+        }
+
+        .welcome-message {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            padding: 24px;
+            margin-bottom: 32px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            line-height: 1.75;
+            color: var(--text);
+            text-align: left;
+        }
+
+        .welcome-message em {
+            color: var(--rose-light);
+            font-style: italic;
+        }
+
+        /* ── PROGRESS ── */
+        .progress-wrap {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 28px;
+        }
+
+        .progress-dot {
+            flex: 1;
+            height: 3px;
+            background: var(--border);
+            border-radius: 2px;
+            transition: background 0.5s;
+        }
+
+        .progress-dot.done {
+            background: var(--rose);
+        }
+
+        .progress-dot.active {
+            background: var(--rose-dim);
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.45
+            }
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            padding: 28px 24px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--rose), var(--rose-dim));
+            border-radius: 2px 0 0 2px;
+        }
+
+        .step-label {
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--rose-dim);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .question-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-style: italic;
+            line-height: 1.55;
+            color: var(--text);
+            margin-bottom: 24px;
+        }
+
+        /* ── ENVELOPE ── */
+        .envelope-card {
+            background: var(--surface);
+            border: 1px dashed var(--rose-dim);
+            border-radius: 2px;
+            padding: 20px 20px 20px 52px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .envelope-card::before {
+            content: '✉';
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 22px;
+            color: var(--rose);
+        }
+
+        .envelope-hint {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-style: italic;
+            color: var(--rose-pale);
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+
+        .envelope-sub {
+            font-size: 12px;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        /* ── CHOICES ── */
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .choice-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: var(--text);
+            font-family: 'Jost', sans-serif;
+            font-size: 15px;
+            font-weight: 300;
+            padding: 14px 18px;
+            text-align: left;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .choice-letter {
+            color: var(--rose-dim);
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            min-width: 16px;
+            font-weight: 400;
+        }
+
+        .choice-btn.anon {
+            justify-content: center;
+        }
+
+        .choice-btn.anon .choice-letter {
+            font-size: 16px;
+            color: var(--rose-light);
+            min-width: auto;
+        }
+
+        .choice-btn:hover:not(:disabled) {
+            border-color: var(--rose-dim);
+            background: #201010;
+        }
+
+        .choice-btn.selected-correct {
+            border-color: var(--correct);
+            background: rgba(109, 171, 138, 0.08);
+            color: var(--correct);
+        }
+
+        .choice-btn.selected-wrong {
+            border-color: var(--wrong);
+            background: rgba(196, 107, 107, 0.08);
+            color: var(--wrong);
+        }
+
+        .choice-btn:disabled {
+            cursor: default;
+        }
+
+        /* ── TEXT INPUT ── */
+        .text-input-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .text-input {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: var(--text);
+            font-family: 'Jost', sans-serif;
+            font-size: 16px;
+            font-weight: 300;
+            padding: 14px 18px;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .text-input:focus {
+            border-color: var(--rose-dim);
+        }
+
+        .text-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        /* ── BUTTONS ── */
+        .submit-btn {
+            background: transparent;
+            border: 1px solid var(--rose-dim);
+            border-radius: 2px;
+            color: var(--rose-light);
+            font-family: 'Jost', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 13px 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            border-color: var(--rose-light);
+            color: var(--rose-pale);
+            background: rgba(139, 58, 58, 0.08);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        .ready-btn {
+            width: 100%;
+            background: rgba(139, 58, 58, 0.12);
+            border: 1px solid var(--rose-dim);
+            border-radius: 2px;
+            color: var(--rose-pale);
+            font-family: 'Jost', sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ready-btn:hover {
+            background: rgba(139, 58, 58, 0.22);
+            border-color: var(--rose-light);
+        }
+
+        .next-btn {
+            width: 100%;
+            background: var(--rose);
+            border: none;
+            border-radius: 2px;
+            color: var(--bg);
+            font-family: 'Jost', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .next-btn:hover {
+            background: var(--rose-light);
+        }
+
+        /* ── FEEDBACK ── */
+        .feedback {
+            font-size: 13px;
+            padding: 10px 14px;
+            border-radius: 2px;
+            margin-top: 10px;
+            display: none;
+            line-height: 1.5;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.wrong-msg {
+            background: rgba(196, 107, 107, 0.08);
+            border: 1px solid rgba(196, 107, 107, 0.25);
+            color: var(--wrong);
+        }
+
+        .feedback.hint-msg {
+            background: rgba(139, 58, 58, 0.08);
+            border: 1px solid rgba(139, 58, 58, 0.25);
+            color: var(--rose-pale);
+        }
+
+        .feedback.ok-msg {
+            background: rgba(109, 171, 138, 0.08);
+            border: 1px solid rgba(109, 171, 138, 0.25);
+            color: var(--correct);
+        }
+
+        /* ── REVEAL ── */
+        .reveal-card {
+            background: var(--card);
+            border: 1px solid var(--rose-dim);
+            border-radius: 2px;
+            padding: 28px 24px;
+            margin-bottom: 16px;
+            display: none;
+            animation: revealPop 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-card.show {
+            display: block;
+        }
+
+        @keyframes revealPop {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .reveal-tag {
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--rose);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reveal-tag::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--rose-dim);
+        }
+
+        .reveal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 30px;
+            font-weight: 300;
+            color: var(--rose-pale);
+            margin-bottom: 10px;
+            line-height: 1.25;
+        }
+
+        .reveal-detail {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .reveal-fact {
+            background: var(--surface);
+            border-left: 3px solid var(--rose-dim);
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.75;
+            display: none;
+        }
+
+        .reveal-fact.show {
+            display: block;
+        }
+
+        .reveal-fact strong {
+            color: var(--rose-light);
+            font-weight: 400;
+        }
+
+        .reveal-photo-placeholder {
+            width: 100%;
+            height: 180px;
+            background: var(--surface);
+            border: 2px dashed var(--border);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+            color: var(--text-dim);
+            font-size: 12px;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .reveal-photo-placeholder span {
+            font-size: 28px;
+        }
+
+        .reveal-photo {
+            width: 100%;
+            border-radius: 2px;
+            margin-bottom: 20px;
+            display: block;
+            border: 1px solid var(--border);
+        }
+
+        /* ── FINAL ── */
+        #screen-final {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .final-rose {
+            font-size: 64px;
+            margin-bottom: 28px;
+            display: block;
+            animation: breatheSlow 4s ease-in-out infinite;
+        }
+
+        #screen-final h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--rose-pale);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        #screen-final p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text);
+            max-width: 380px;
+            margin: 0 auto 32px;
+        }
+
+        .hearts {
+            font-size: 22px;
+            letter-spacing: 10px;
+            color: var(--rose);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.35
+            }
+        }
+
+        /* ── NOTION STATUS ── */
+        .notion-status {
+            position: fixed;
+            bottom: 14px;
+            right: 16px;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .notion-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--text-dim);
+        }
+
+        .notion-dot.ok {
+            background: var(--correct);
+        }
+
+        .notion-dot.err {
+            background: var(--wrong);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main">
+
+        <div id="screen-loading" class="screen active">
+            <span class="loading-rose">🌹</span>
+            <div class="loading-text">Preparing your day…</div>
+            <div class="loading-error" id="loadingError"></div>
+            <button class="retry-btn" id="retryBtn" onclick="init()">Try again</button>
+        </div>
+
+        <div id="screen-welcome" class="screen">
+            <div class="welcome-wrap">
+                <span class="welcome-rose">🌹</span>
+                <h1>Happy Birthday,<br>Katusha</h1>
+                <p class="tagline">A day made just for you</p>
+                <div class="welcome-message">
+                    Today holds <em>a handful of secrets</em> — each one waiting to be found and unlocked.<br><br>
+                    Some clues live here on this page. Others are hidden somewhere in the world, just for you to
+                    discover.<br><br>
+                    Answer honestly. Search carefully. <em>Enjoy every moment.</em>
+                </div>
+                <button class="submit-btn" onclick="startJourney()">Begin the adventure →</button>
+            </div>
+        </div>
+
+        <div id="screen-question" class="screen">
+            <div class="progress-wrap" id="progressBar"></div>
+            <div class="card" id="questionCard">
+                <div class="step-label" id="stepLabel">Stop 1</div>
+                <div id="envelopeHint"></div>
+                <div class="question-text" id="questionText"></div>
+                <div id="answerArea"></div>
+                <div class="feedback" id="feedbackBox"></div>
+            </div>
+            <div class="reveal-card" id="revealCard">
+                <div class="reveal-tag">✦ Revealed</div>
+                <div id="revealPhotoWrap"></div>
+                <div class="reveal-fact" id="revealFact"></div>
+                <div class="reveal-title" id="revealTitle"></div>
+                <div class="reveal-detail" id="revealDetail"></div>
+                <button class="next-btn" onclick="nextQuestion()">Continue →</button>
+            </div>
+        </div>
+
+        <div id="screen-final" class="screen">
+            <span class="final-rose">🏡</span>
+            <h2>The last stop…<br>is home.</h2>
+            <p>The best ending to any adventure is returning to warmth, comfort, and the person you love
+                most.<br><br>Thank
+                you for spending your birthday with me. Every moment today was made for you.</p>
+            <div class="hearts">♥ ♥ ♥</div>
+        </div>
+
+    </div>
+
+    <div class="notion-status">
+        <div class="notion-dot" id="notionDot"></div>
+        <span id="notionLabel">notion</span>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════
+        // CONFIG — Google Sheets CSV
+        // Checked (TRUE) in sheet = question unlocked
+        // ═══════════════════════════════════════════
+        const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfsLoTmLOAfaa0dzikCvAkDwUmgE5tNnB1IMduSyGKUIyUPmpWDaHCCyMOuAgeSddKQWrJ9culgmWj/pub?gid=0&single=true&output=csv';
+
+        // ═══════════════════════════════════════════
+        // ALL QUESTIONS
+        // id must match what you put in Notion checkboxes
+        // ═══════════════════════════════════════════
+        const ALL_STEPS = [
+            {
+                id: 'Q1',
+                type: 'choice',
+                question: "First things first — how old are you today, my love?",
+                choices: ['28', '30', '36', '40'],
+                correct: '30',
+                hint: "Think much younger… you've barely aged a day 😏",
+                reveal: {
+                    title: "Our Birthday Breakfast or next question?",
+                    detail: "A perfect start to your special day. Enjoy every bite — you deserve it! ☕️🥞",
+                    fact: "You're starting your thirtieth year with a smile and a full heart. That's the best possible way to begin — with love, happiness, and a delicious breakfast made just for you."
+                }
+            },
+            {
+                id: 'Q2',
+                type: 'envelope',
+                envelopeHint: "Where do we ferment our sourdough?",
+                envelopeSub: "Find the envelope hidden there — it has your next question inside.",
+                readyLabel: "I found the envelope — I'm ready to answer ✉",
+                choices: ['A', 'B', 'C', 'D'],
+                correct: 'C',
+                reveal: {
+                    title: null, detail: null,
+                    photo: null,
+                    fact: `<strong>Velykoanadolsky Forest</strong> — the largest man-made forest in Europe, covering 2,543 hectares in the Donetsk Region.<br><br>Forester Viktor von Graff established it in 1843 to prove trees could thrive in the arid steppe. It successfully combated droughts and soil erosion. Today it is a botanical reserve of national importance with over 600 species of trees and shrubs, an arboretum, and a forest museum.`
+                }
+            },
+            {
+                id: 'Q3',
+                type: 'choice',
+                question: "What is the number plate of our car?",
+                choices: ['GR17KNP', 'GV67GNO', 'HK19MWL', 'FP65XBT'],
+                correct: 'GV67GNO',
+                hint: "Look out the window…",
+                reveal: {
+                    title: "You never know when you might need it",
+                    detail: "Next question is hidden in our car.",
+                    photo: null, fact: null
+                }
+            },
+            {
+                id: 'Q4',
+                type: 'envelope',
+                envelopeHint: "We might use an iPad to entertain our children one day — where would you keep it in the car?",
+                envelopeSub: "Find the envelope hidden there — your next question.",
+                readyLabel: "Found it — I'm ready to answer ✉",
+                choices: ['A', 'B', 'C', 'D'],
+                correct: 'D',
+                reveal: {
+                    title: "RHS Garden Hyde Hall",
+                    detail: "A beautiful garden awaits us. Get comfortable — we're on our way.",
+                    photo: null,
+                    fact: `<strong>Arsenalna Station, Kyiv Metro</strong> — the deepest metro station in Europe at 105.5 meters underground.<br><br>Its depth is due to the city's steep geography and the high banks of the Dnipro River. It held the world record from its opening in 1960 until 2023, when China surpassed it at 116 meters. Reaching the platform requires two separate escalators — a descent of approximately five minutes.`
+                }
+            },
+            {
+                id: 'Q5',
+                type: 'freepass',
+                question: "We've arrived at Hyde Hall. What colour are the roses closest to the main entrance?",
+                passNote: "Whatever you see is exactly right — I trust your eyes 🌹",
+                reveal: {
+                    title: "Premier Inn Colchester Town Centre",
+                    detail: "Tonight we're staying in Colchester. Check-in awaits, and the evening is just beginning.",
+                    photo: null, fact: null
+                }
+            },
+            {
+                id: 'Q6',
+                type: 'choice',
+                question: "What is the name of the Roman temple whose foundations lie beneath Colchester Castle?",
+                choices: ['Temple of Jupiter', 'Temple of Claudius', 'Temple of Mars', 'Temple of Diana'],
+                correct: 'Temple of Claudius',
+                hint: "The castle was literally built on top of it.",
+                reveal: {
+                    title: "Dinner at The Pavilion",
+                    detail: "Tonight we dine at The Pavilion, Colchester. Table booked for 19:30. Time to get dressed up ✨",
+                    photo: null, fact: null
+                }
+            },
+            {
+                id: 'Q7',
+                type: 'freepass',
+                question: "What colour is the napkin on your table?",
+                passNote: "Look down — whatever you see is correct 🍽️",
+                reveal: {
+                    title: "Spa Day at Bannatyne",
+                    detail: "Tomorrow morning: Bannatyne Health Club & Spa, Kingsford Park. Rest well tonight — you've earned a full day of pampering.",
+                    photo: null, fact: null
+                }
+            },
+            {
+                id: 'Q8',
+                type: 'choice',
+                question: "You're warm, you're wrapped in a robe. How do you feel right now?",
+                choices: ['Relaxed & blissful', 'Like an actual queen', 'Completely spoiled', 'All of the above'],
+                correct: 'All of the above',
+                hint: "I know you, Katusha 😄",
+                reveal: {
+                    title: "Colchester Castle",
+                    detail: "The largest Norman keep in Europe — over 900 years of history. Time for some adventure.",
+                    photo: null, fact: null
+                }
+            },
+            {
+                id: 'Q9',
+                type: 'choice',
+                question: "We're at Colchester Castle, built by William the Conqueror. What year was it completed?",
+                choices: ['1066', '1076', '1100', '1215'],
+                correct: '1100',
+                hint: "Construction began in 1076, but it took some years to finish…",
+                reveal: {
+                    title: "Writtle Village Green",
+                    detail: "A peaceful, beautiful village green to end the day gently. Let's take a slow walk together.",
+                    photo: null, fact: null
+                }
+            },
+            {
+                id: 'Q10',
+                type: 'choice',
+                question: "We're at Writtle, coffee in hand. Did you like your coffee?",
+                choices: ['Yes, it was perfect', 'No, honestly not', 'I prefer special coffee ☕'],
+                correct: null,
+                freePass: true,
+                passNote: "Any answer is perfect — today is all about you.",
+                final: true,
+                reveal: null
+            }
+        ];
+
+        // ═══════════════════════════════════════════
+        // STATE
+        // ═══════════════════════════════════════════
+        let ENABLED = [];
+        let idx = 0;
+        let wrongAttempts = 0;
+
+        function save() { try { localStorage.setItem('k_bday26', idx); } catch (e) { } }
+        function load() { try { const v = localStorage.getItem('k_bday26'); if (v !== null) idx = parseInt(v, 10) || 0; } catch (e) { } }
+
+        // ═══════════════════════════════════════════
+        // GOOGLE SHEETS FETCH
+        // Tries direct fetch first; if CORS blocks it (e.g. file:// origin)
+        // automatically retries via corsproxy.io.
+        // Header row is parsed to find the correct ID + unlocked columns,
+        // so the sheet can have any number of extra columns safely.
+        // ═══════════════════════════════════════════
+        async function fetchSheetConfig() {
+            try {
+                const targetUrl = SHEET_CSV + '&t=' + Date.now();
+                let text;
+
+                // 1️⃣ Try direct fetch (works when served over HTTP/S)
+                try {
+                    const res = await fetch(targetUrl, { signal: AbortSignal.timeout(5000) });
+                    if (!res.ok) throw new Error(res.status);
+                    text = await res.text();
+                } catch (corsErr) {
+                    // 2️⃣ Fall back to allorigins.win (free CORS proxy for file:// origin)
+                    console.info('Direct fetch blocked, trying proxy…', corsErr.message);
+                    try {
+                        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl);
+                        const res2 = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+                        if (!res2.ok) throw new Error(res2.status);
+                        text = await res2.text();
+                    } catch (p1Err) {
+                        // 3️⃣ Last resort: codetabs proxy
+                        console.info('allorigins failed, trying codetabs…', p1Err.message);
+                        const proxyUrl2 = 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(targetUrl);
+                        const res3 = await fetch(proxyUrl2, { signal: AbortSignal.timeout(8000) });
+                        if (!res3.ok) throw new Error(res3.status);
+                        text = await res3.text();
+                    }
+                }
+
+                // Parse header row to find correct column indices
+                // Sheet may have columns like: #, ID, unlocked, Content
+                const allRows = text.trim().split('\n');
+                const header = allRows[0].split(',').map(c => c.trim().toLowerCase().replace(/^"|"$/g, ''));
+                let idCol = header.findIndex(h => h === 'id');
+                let valCol = header.findIndex(h => h === 'unlocked');
+                if (idCol < 0) idCol = 0; // fallback: 2-column format (id, unlocked)
+                if (valCol < 0) valCol = 1;
+
+                const unlocked = new Set();
+                allRows.slice(1).forEach(row => {
+                    const cols = row.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+                    const id = cols[idCol]?.toUpperCase();
+                    const val = cols[valCol]?.toUpperCase();
+                    if (id && (val === 'TRUE' || val === 'YES' || val === '1')) {
+                        unlocked.add(id);
+                    }
+                });
+
+                setSheetStatus(true);
+                const result = ALL_STEPS.map(s => s.id).filter(id => unlocked.has(id));
+                return result.length > 0 ? result : ['Q1'];
+            } catch (e) {
+                console.warn('Sheet fetch failed:', e);
+                setSheetStatus(false);
+                return null; // null = offline fallback (show all)
+            }
+        }
+
+        function setSheetStatus(ok) {
+            document.getElementById('notionDot').className = 'notion-dot ' + (ok ? 'ok' : 'err');
+            document.getElementById('notionLabel').textContent = ok ? 'synced' : 'offline';
+        }
+
+        // ═══════════════════════════════════════════
+        // INIT
+        // ENABLED = questions unlocked in sheet (in order)
+        // If she's at a step not yet unlocked → waiting screen
+        // ═══════════════════════════════════════════
+        async function init() {
+            document.getElementById('loadingError').style.display = 'none';
+            document.getElementById('retryBtn').style.display = 'none';
+            showScreen('screen-loading');
+
+            const unlockedIds = await fetchSheetConfig();
+            // null = offline fallback: show all
+            if (unlockedIds === null) {
+                ENABLED = [...ALL_STEPS];
+            } else {
+                // Keep questions in master order, only those unlocked
+                ENABLED = ALL_STEPS.filter(s => unlockedIds.includes(s.id));
+                if (!ENABLED.length) ENABLED = ALL_STEPS.slice(0, 1); // always at least Q1
+            }
+
+            load();
+
+            // Clamp idx to what's actually unlocked
+            if (idx >= ENABLED.length) {
+                // She's ahead of what's unlocked — show waiting screen
+                showWaiting();
+                return;
+            }
+
+            if (idx >= ALL_STEPS.length) { showScreen('screen-final'); return; }
+            if (idx > 0) { showScreen('screen-question'); renderStep(); }
+            else { showScreen('screen-welcome'); }
+        }
+
+        function showWaiting() {
+            const el = document.getElementById('screen-waiting');
+            if (el) { showScreen('screen-waiting'); return; }
+            // Inject waiting screen if not present
+            const div = document.createElement('div');
+            div.id = 'screen-waiting';
+            div.className = 'screen active';
+            div.innerHTML = `
+    <div style="text-align:center;padding:60px 0">
+      <span style="font-size:48px;display:block;margin-bottom:24px;animation:breatheSlow 3s ease-in-out infinite">⏳</span>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;color:var(--rose-pale);margin-bottom:16px">Your next clue isn't ready yet…</div>
+      <div style="font-size:14px;color:var(--text-dim);line-height:1.7;max-width:320px;margin:0 auto 32px">Enjoy the moment you're in. The next secret will be waiting when the time is right.</div>
+      <button class="submit-btn" onclick="init()">Check again →</button>
+    </div>`;
+            document.querySelector('.main').appendChild(div);
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            div.classList.add('active');
+        }
+
+        function startJourney() { showScreen('screen-question'); renderStep(); }
+
+        // ═══════════════════════════════════════════
+        // SCREENS
+        // ═══════════════════════════════════════════
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        // ═══════════════════════════════════════════
+        // RENDER
+        // ═══════════════════════════════════════════
+        function renderProgress() {
+            const bar = document.getElementById('progressBar');
+            bar.innerHTML = '';
+            ENABLED.forEach((_, i) => {
+                const d = document.createElement('div');
+                d.className = 'progress-dot' + (i < idx ? ' done' : i === idx ? ' active' : '');
+                bar.appendChild(d);
+            });
+        }
+
+        function renderStep() {
+            wrongAttempts = 0;
+            const step = ENABLED[idx];
+
+            renderProgress();
+            document.getElementById('stepLabel').textContent = `Stop ${idx + 1} of ${ENABLED.length}`;
+            document.getElementById('feedbackBox').className = 'feedback';
+            document.getElementById('feedbackBox').textContent = '';
+            document.getElementById('revealCard').classList.remove('show');
+            document.getElementById('envelopeHint').innerHTML = '';
+            document.getElementById('questionText').textContent = '';
+            document.getElementById('answerArea').innerHTML = '';
+
+            const area = document.getElementById('answerArea');
+
+            if (step.type === 'envelope') {
+                document.getElementById('envelopeHint').innerHTML = `
+      <div class="envelope-card">
+        <div class="envelope-hint">${step.envelopeHint}</div>
+        <div class="envelope-sub">${step.envelopeSub}</div>
+      </div>`;
+                const rb = document.createElement('button');
+                rb.className = 'ready-btn';
+                rb.textContent = step.readyLabel;
+                rb.onclick = () => { rb.remove(); renderAnonChoices(step, area); };
+                area.appendChild(rb);
+
+            } else if (step.type === 'choice') {
+                document.getElementById('questionText').textContent = step.question;
+                renderChoices(step, area);
+
+            } else { // freepass
+                document.getElementById('questionText').textContent = step.question;
+                const wrap = document.createElement('div');
+                wrap.className = 'text-input-wrap';
+                const inp = document.createElement('input');
+                inp.type = 'text'; inp.className = 'text-input'; inp.id = 'tInp';
+                inp.placeholder = 'Type what you see…';
+                inp.onkeydown = e => { if (e.key === 'Enter') handleFreePass(step); };
+                const btn = document.createElement('button');
+                btn.className = 'submit-btn'; btn.textContent = 'Submit →';
+                btn.onclick = () => handleFreePass(step);
+                wrap.appendChild(inp); wrap.appendChild(btn);
+                area.appendChild(wrap);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderChoices(step, area) {
+            const wrap = document.createElement('div');
+            wrap.className = 'choices';
+            const letters = ['A', 'B', 'C', 'D'];
+            step.choices.forEach((c, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.innerHTML = `<span class="choice-letter">${letters[i] || ''}</span>${c}`;
+                btn.onclick = () => handleChoice(c, btn, step);
+                wrap.appendChild(btn);
+            });
+            area.appendChild(wrap);
+        }
+
+        function renderAnonChoices(step, area) {
+            const wrap = document.createElement('div');
+            wrap.className = 'choices';
+            ['A', 'B', 'C', 'D'].forEach(l => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn anon';
+                btn.innerHTML = `<span class="choice-letter">${l}</span>`;
+                btn.onclick = () => handleAnonChoice(l, btn, step);
+                wrap.appendChild(btn);
+            });
+            area.appendChild(wrap);
+        }
+
+        // ═══════════════════════════════════════════
+        // ANSWER HANDLERS
+        // ═══════════════════════════════════════════
+        function allChoiceBtns() { return document.querySelectorAll('.choice-btn'); }
+
+        function handleChoice(value, btn, step) {
+            if (step.freePass || step.correct === null) {
+                allChoiceBtns().forEach(b => b.disabled = true);
+                btn.classList.add('selected-correct');
+                setTimeout(() => doReveal(step), 600);
+                return;
+            }
+            allChoiceBtns().forEach(b => b.disabled = true);
+            if (value === step.correct) {
+                btn.classList.add('selected-correct');
+                setTimeout(() => doReveal(step), 600);
+            } else {
+                btn.classList.add('selected-wrong');
+                wrongAttempts++;
+                setTimeout(() => {
+                    allChoiceBtns().forEach(b => { b.disabled = false; b.classList.remove('selected-wrong', 'selected-correct'); });
+                    feedback(wrongAttempts >= 2 ? `💡 ${step.hint}` : 'Not quite — try again!', wrongAttempts >= 2 ? 'hint-msg' : 'wrong-msg');
+                }, 700);
+            }
+        }
+
+        function handleAnonChoice(letter, btn, step) {
+            allChoiceBtns().forEach(b => b.disabled = true);
+            if (letter === step.correct) {
+                btn.classList.add('selected-correct');
+                setTimeout(() => doReveal(step), 600);
+            } else {
+                btn.classList.add('selected-wrong');
+                wrongAttempts++;
+                setTimeout(() => {
+                    allChoiceBtns().forEach(b => { b.disabled = false; b.classList.remove('selected-wrong', 'selected-correct'); });
+                    feedback(wrongAttempts >= 2 ? '💡 Check the envelope again…' : 'Not that one — try again!', wrongAttempts >= 2 ? 'hint-msg' : 'wrong-msg');
+                }, 700);
+            }
+        }
+
+        function handleFreePass(step) {
+            const inp = document.getElementById('tInp');
+            if (inp && !inp.value.trim()) { feedback('Type anything you see first.', 'wrong-msg'); return; }
+            feedback(step.passNote || 'Perfect!', 'ok-msg');
+            if (inp) inp.disabled = true;
+            document.querySelectorAll('.submit-btn').forEach(b => b.disabled = true);
+            setTimeout(() => doReveal(step), 1200);
+        }
+
+        function feedback(msg, cls) {
+            const box = document.getElementById('feedbackBox');
+            box.textContent = msg;
+            box.className = `feedback show ${cls}`;
+        }
+
+        // ═══════════════════════════════════════════
+        // REVEAL
+        // ═══════════════════════════════════════════
+        function doReveal(step) {
+            document.getElementById('feedbackBox').className = 'feedback';
+
+            if (step.final) { save(); setTimeout(() => showScreen('screen-final'), 400); return; }
+
+            const rev = step.reveal;
+            const card = document.getElementById('revealCard');
+
+            // Photo
+            const pw = document.getElementById('revealPhotoWrap');
+            pw.innerHTML = '';
+            if (rev.photo === 'PHOTO_PLACEHOLDER') {
+                pw.innerHTML = `<div class="reveal-photo-placeholder"><span>📸</span><span>Our photo goes here</span></div>`;
+            } else if (rev.photo) {
+                const img = document.createElement('img');
+                img.src = rev.photo; img.className = 'reveal-photo';
+                pw.appendChild(img);
+            }
+
+            // Fact
+            const fe = document.getElementById('revealFact');
+            if (rev.fact) { fe.innerHTML = rev.fact; fe.classList.add('show'); }
+            else { fe.classList.remove('show'); fe.innerHTML = ''; }
+
+            document.getElementById('revealTitle').textContent = rev.title || '';
+            document.getElementById('revealDetail').textContent = rev.detail || '';
+
+            card.classList.add('show');
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            save();
+        }
+
+        async function nextQuestion() {
+            idx++;
+            save();
+            document.getElementById('revealCard').classList.remove('show');
+
+            // Re-fetch sheet to get latest unlocked state
+            const unlockedIds = await fetchSheetConfig();
+            if (unlockedIds !== null) {
+                // Update ENABLED to reflect current sheet state
+                ENABLED = ALL_STEPS.filter(s => unlockedIds.includes(s.id));
+                if (!ENABLED.length) ENABLED = ALL_STEPS.slice(0, 1);
+            }
+            // If fetch failed (null), keep ENABLED as-is (last known state)
+            // — this means a network error will correctly gate the next question
+
+            // All questions done → final screen
+            if (idx >= ALL_STEPS.length) { showScreen('screen-final'); return; }
+
+            // Next question not yet unlocked → waiting screen
+            if (idx >= ENABLED.length) {
+                showWaiting();
+                return;
+            }
+            renderStep();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ═══════════════════════════════════════════
+        // PETALS
+        // ═══════════════════════════════════════════
+        function spawnPetals() {
+            const colors = ['var(--petal1)', 'var(--petal2)', 'var(--petal3)'];
+            for (let i = 0; i < 14; i++) {
+                const p = document.createElement('div');
+                p.className = 'petal';
+                p.style.cssText = `
+      left:${Math.random() * 100}vw;
+      background:${colors[i % 3]};
+      width:${4 + Math.random() * 5}px;
+      height:${7 + Math.random() * 8}px;
+      animation-duration:${9 + Math.random() * 14}s;
+      animation-delay:${Math.random() * 14}s;`;
+                document.body.appendChild(p);
+            }
+        }
+
+        window.addEventListener('load', () => { spawnPetals(); init(); });
+    </script>
+</body>
+
+</html>
